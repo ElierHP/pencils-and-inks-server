@@ -3,6 +3,7 @@ require "test_helper"
 class ProductTest < ActiveSupport::TestCase
   setup do
     @product = products(:one)
+    @second_product = products(:two)
   end
   test "title should be valid" do
     @product.title = ""
@@ -11,6 +12,16 @@ class ProductTest < ActiveSupport::TestCase
     assert_not @product.valid?
     @product.title = "a" * 9
     assert_not @product.valid?
+    # not case sensitive
+    @product.title = @second_product.title.upcase
+    assert_not @product.valid?
+  end
+
+  test "title should be unique" do
+    @second_product.title = @product.title
+    assert_not @second_product.valid?
+    @second_product.sku = @product.sku
+    assert_not @second_product.valid?
   end
 
   test "price should exist" do
@@ -33,6 +44,9 @@ class ProductTest < ActiveSupport::TestCase
     @product.sku = "a" * 21
     assert_not @product.valid?
     @product.sku = "a" * 5
+    assert_not @product.valid?
+    # not case sensitive
+    @product.sku = @second_product.sku.upcase
     assert_not @product.valid?
   end
 

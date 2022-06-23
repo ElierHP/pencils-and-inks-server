@@ -1,19 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
+  title: test product title
   price: 1.5
-  description: MyText
-  sku: MyString
-  images: MyText
-  category: MyString
-  tags: MyString
+  description: this is a test product description used as an example.
+  sku: randomskustring
+  images: image1,image2,image3
+  category: pencil
+  tags: featured
 
 two:
-  title: MyString
-  price: 1.5
-  description: MyText
-  sku: MyString
-  images: MyText
-  category: MyString
-  tags: MyString
+  title: test product title2
+  price: 2.0
+  description: this is a test product description used as an example.
+  sku: randomskustring
+  images: image1,image2,image3
+  category: pencil
+  tags: featured

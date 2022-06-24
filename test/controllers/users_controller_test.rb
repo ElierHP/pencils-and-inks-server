@@ -12,14 +12,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should post to create" do
     assert_difference("User.count") do
-      post users_url, params: {user: {email: 'example_user', password: 'secret', password_confirmation: 'secret', role: 'member'} }, as: :json
+      post users_url, params: {user: {email: 'example_user@example.com', password: 'secret', password_confirmation: 'secret', role: 'member'} }, as: :json
     end
 
     assert_response :created
   end
 
   test "should get update" do
-    patch user_url(@user), params: {user: {email: 'example_user_2', password: 'secret2', password_confirmation: 'secret2', role: 'admin'} }, as: :json
+    patch user_url(@user), params: {user: {email: 'example_user_2@example.com', password: 'secret2', password_confirmation: 'secret2', role: 'admin'} }, as: :json
 
     assert_response :success
   end

@@ -24,6 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_23_185950) do
     t.string "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["sku"], name: "index_products_on_sku", unique: true
+    t.index ["title"], name: "index_products_on_title", unique: true
   end
 
 end

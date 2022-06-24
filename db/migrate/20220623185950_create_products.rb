@@ -1,12 +1,12 @@
 class CreateProducts < ActiveRecord::Migration[7.0]
   def change
     create_table :products do |t|
-      t.string :title
-      t.float :price
-      t.text :description
-      t.string :sku
-      t.text :images
-      t.string :category
+      t.string :title, null: false
+      t.float :price, null: false
+      t.text :description, null: false
+      t.string :sku, null: false
+      t.text :images, null: false
+      t.string :category, null: false
       t.string :tags
 
       t.timestamps

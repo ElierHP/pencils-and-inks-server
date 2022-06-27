@@ -3,6 +3,7 @@ require "test_helper"
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @product = products(:one)
+    @user = log_in_test_user('admin')
   end
 
   test "should get index" do
@@ -18,6 +19,14 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "should not create product unless admin" do
+    @user.role = 'member'
+    @user.save
+    
+    post products_url
+    assert_response :unauthorized
+  end
+
   test "should show product" do
     get product_url(@product), as: :json
     assert_response :success
@@ -28,11 +37,29 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should not update product unless admin" do
+    @user.role = 'member'
+    @user.save
+    
+    patch product_url(@product)
+
+    assert_response :unauthorized
+  end
+
   test "should destroy product" do
     assert_difference("Product.count", -1) do
       delete product_url(@product), as: :json
     end
 
     assert_response :no_content
+  end
+
+  test "should not destroy product unless admin" do
+    @user.role = 'member'
+    @user.save
+    
+    patch product_url(@product)
+
+    assert_response :unauthorized
   end
 end

@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
 
+  # GET /users/1
   def show
     render json: {id: @user[:id], email: @user[:email]}
   end
 
+  # POST /users
   def create
     @user = User.new(user_params)
 
@@ -15,6 +17,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # PUT/PATCH /users/1
   def update
     if @user.update(user_params)
       render json: @user
@@ -23,6 +26,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # DELETE /users/1
   def destroy
     @user.destroy
   end

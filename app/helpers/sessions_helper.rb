@@ -18,9 +18,19 @@ module SessionsHelper
         !current_user.nil?
     end
 
+    # Returns true if the user is logged in and role is admin.
+    def logged_in_admin?
+        !current_user.nil? && current_user[:role] === 'admin'
+    end
+
     # Returns unauthorized unless the user is logged in.
     def authorize_user
         render json: 'unauthorized', status: :unauthorized unless logged_in?
+    end
+
+    # Returns unauthorized unless the user is logged in as admin.
+    def authorize_admin
+        render json: 'unauthorized', status: :unauthorized unless logged_in_admin?
     end
 
     # Delete user id session and set current user to nil

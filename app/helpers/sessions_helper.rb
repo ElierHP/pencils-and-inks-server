@@ -1,0 +1,31 @@
+module SessionsHelper
+
+    # Logs in the given user.
+    def log_in(user)
+        reset_session
+        session[:user_id] = user.id
+    end
+
+    # Returns the currently logged in user.
+    def current_user
+        if session[:user_id]
+            @current_user ||= User.find_by(id: session[:user_id])
+        end
+    end
+
+    # Returns true if the user is logged in, false otherwise.
+    def logged_in?
+        !current_user.nil?
+    end
+
+    # Returns unauthorized unless the user is logged in.
+    def authorize_user
+        render json: 'unauthorized', status: :unauthorized unless logged_in?
+    end
+
+    # Delete user id session and set current user to nil
+    def log_out
+        session.delete(:user_id)
+        @current_user = nil
+    end
+end

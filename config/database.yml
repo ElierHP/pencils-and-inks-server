@@ -80,7 +80,5 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: pencils_and_inks_server_production
-  username: pencils_and_inks_server
-  password: <%= ENV["PENCILS_AND_INKS_SERVER_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>

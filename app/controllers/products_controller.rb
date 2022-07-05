@@ -12,6 +12,12 @@ class ProductsController < ApplicationController
     render json: @products
   end
 
+  # Get /latest
+  def latest
+    @products = Product.order('created_at DESC').limit(4)
+    render json: @products
+  end
+
   # GET /products/1
   def show
     render json: @product

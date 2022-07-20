@@ -5,15 +5,11 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    if params[:category] == "pencil" && params[:tags]
-     @products = pencil_filter params[:tags]
-    else 
       if params[:category]
-        @products = Product.where(category: params[:category]).all
+        @products = find_by_tags params[:category], params[:tags]   
       else
         @products = Product.all
       end
-    end
 
     render json: @products
   end

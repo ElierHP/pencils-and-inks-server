@@ -1,26 +1,42 @@
 module ProductsHelper
-    def pencil_filter(tags)
-         # Find all products where category is "pencil".
-        @pencils = Product.where(category: "pencil").all
+    # Filter products based on tags
+    def product_filter(tags, category, accepted_tags)
+        @products = Product.where(category: category).all
+        @filtered_products = []
 
-        # Map over the pencils and return any product that matches the tags sent via body request.
-        @mapPencils = @pencils.map do |product|  
-            if tags.include?("featured") && product.tags.include?("featured")
-                product
-        
-            elsif tags.include?("graphite-pencil") && product.tags.include?("graphite-pencil")
-                 product
-        
-            elsif tags.include?("colored-pencil") && product.tags.include?("colored-pencil")
-                product
-            end
+        # Loop over products and push any product that matches the tags into @filtered_products
+        @products.each do |product|  
+            valid = false
+            accepted_tags.each do |tag|
+                if tags.include?(tag) && product.tags.include?(tag)
+                    valid = true
+                end
+            end 
+            if valid
+                @filtered_products.push(product)
+            end     
         end
 
-        # Filter out any nils left over from the previous map.
-        @products = @mapPencils.filter do |product|
-            product != nil
-        end
+        @filtered_products
+    end
 
-      return @products
+    # Variables for the accepted tags of each category.
+    pencil_tags = ["featured", "graphite-pencil", "colored-pencil", "mechanical-pencil"]
+    paper_tags = ["featured", "sketch-paper", "sketchbook"]
+    ink_tags = ["featured", "artist-ink", "inking-pen"]
+
+    # Filter by tags and return products.
+    def find_by_tags(category, tags)
+        if category == "pencil" && tags
+           @products = product_filter params[:tags], "pencil", pencil_tags
+        elsif category == "paper" && tags
+            @products = product_filter tags, "paper", paper_tags
+              
+        elsif category == "ink" && tags
+            @products = product_filter tags, "ink", ink_tags
+              
+        else
+            @products = Product.where(category: category).all
+        end
     end
 end

@@ -1,14 +1,20 @@
 class ProductsController < ApplicationController
+  include ProductsHelper
   before_action :set_product, only: %i[ show update destroy ]
   before_action :authorize_admin, only: %i[ create update destroy ]
 
   # GET /products
   def index
-    if params[:category]
-      @products = Product.where(category: params[:category]).all
-    else
-      @products = Product.all
+    if params[:category] == "pencil" && params[:tags]
+     @products = pencil_filter params[:tags]
+    else 
+      if params[:category]
+        @products = Product.where(category: params[:category]).all
+      else
+        @products = Product.all
+      end
     end
+
     render json: @products
   end
 

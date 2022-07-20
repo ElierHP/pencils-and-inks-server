@@ -14,8 +14,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "email should not be too long" do
+  test "email should have a maximun length" do
     @user.email = "a" * 244 + "@example.com"
+    assert_not @user.valid?
+  end
+
+  test "email should have a minimum length" do
+    @user.email = "a" * 5
     assert_not @user.valid?
   end
 
@@ -56,6 +61,11 @@ class UserTest < ActiveSupport::TestCase
 
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
+  end
+
+  test "password should have a maximum length" do
+    @user.password = @user.password_confirmation = "a" * 256
     assert_not @user.valid?
   end
 

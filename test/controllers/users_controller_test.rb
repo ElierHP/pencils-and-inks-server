@@ -2,7 +2,12 @@ require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:one)
+    @user = log_in_test_user('member')
+  end
+
+  test "should get current user" do
+    get users_url
+    assert_response :success
   end
 
   test "should get show" do

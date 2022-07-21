@@ -5,18 +5,18 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
+      # GET /products?category=pencil
       if params[:category]
-        @products = find_by_tags params[:category], params[:tags]   
+        @products = find_by_tags params[:category], params[:tags]  
+
+      # GET /products?filter=latest
+      elsif params[:filter] == "latest"
+        @products = Product.order('created_at DESC').limit(4)
+
       else
         @products = Product.all
       end
 
-    render json: @products
-  end
-
-  # Get /latest
-  def latest
-    @products = Product.order('created_at DESC').limit(4)
     render json: @products
   end
 

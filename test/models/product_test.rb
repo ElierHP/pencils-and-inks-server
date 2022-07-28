@@ -32,7 +32,7 @@ class ProductTest < ActiveSupport::TestCase
   test "description should be valid" do
     @product.description = ""
     assert_not @product.valid?
-    @product.description = "a" * 1001
+    @product.description = "a" * 2001
     assert_not @product.valid?
     @product.description = "a" * 19
     assert_not @product.valid?

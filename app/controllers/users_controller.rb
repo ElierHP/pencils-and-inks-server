@@ -20,7 +20,7 @@ class UsersController < ApplicationController
       log_in @user
       render json: {email: @user[:email], role: @user[:role]}, status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :conflict
     end
   end
 

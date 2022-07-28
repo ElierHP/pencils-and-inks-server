@@ -4,7 +4,7 @@ class Product < ApplicationRecord
 
     validates :price, presence: true
 
-    validates :description, presence: true, length: {maximum: 1000, minimum: 20}
+    validates :description, presence: true, length: {maximum: 2000, minimum: 20}
 
     validates :sku, presence: true, uniqueness: { case_sensitive: false }, length: {maximum: 20, minimum: 6}
 

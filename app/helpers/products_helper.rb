@@ -20,20 +20,24 @@ module ProductsHelper
         @filtered_products
     end
 
-    # Variables for the accepted tags of each category.
-    pencil_tags = ["featured", "graphite-pencil", "colored-pencil", "mechanical-pencil"]
-    paper_tags = ["featured", "sketch-paper", "sketchbook"]
-    ink_tags = ["featured", "artist-ink", "inking-pen"]
+     
 
     # Filter by tags and return products.
     def find_by_tags(category, tags)
-        if category == "pencil" && tags
-           @products = product_filter params[:tags], "pencil", pencil_tags
-        elsif category == "paper" && tags
-            @products = product_filter tags, "paper", paper_tags
+        # Variables for the accepted tags of each category.
+        @pencil_tags = ["featured", "graphite-pencil", "colored-pencil", "mechanical-pencil"]
+        @paper_tags = ["featured", "sketch-paper", "sketchbook"]
+        @ink_tags = ["featured", "artist-ink", "inking-pen"]
+
+        # Check for the correct category.
+        if category == "pencils" && tags
+           @products = product_filter params[:tags], "pencils", @pencil_tags
+
+        elsif category == "papers" && tags
+            @products = product_filter tags, "papers", @paper_tags
               
-        elsif category == "ink" && tags
-            @products = product_filter tags, "ink", ink_tags
+        elsif category == "inks" && tags
+            @products = product_filter tags, "inks", @ink_tags
               
         else
             @products = Product.where(category: category).all

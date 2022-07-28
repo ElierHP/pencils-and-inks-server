@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-    has_many :reviews
+    has_many :reviews, dependent: :destroy
     
     # validations
     validates :title, presence: true,  uniqueness: { case_sensitive: false }, length: {maximum: 100, minimum: 10}

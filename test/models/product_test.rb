@@ -5,6 +5,7 @@ class ProductTest < ActiveSupport::TestCase
     @product = products(:one)
     @second_product = products(:two)
   end
+  
   test "title should be valid" do
     @product.title = ""
     assert_not @product.valid?

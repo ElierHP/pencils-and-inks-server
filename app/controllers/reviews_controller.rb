@@ -1,21 +1,28 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: %i[ show update destroy ]
+  before_action :authorize_user, only: %i[ create update destroy ]
+  before_action :set_review, only: %i[ update destroy ]
 
   # GET /reviews
   def index
-    @reviews = Review.all
-
+    if params[:product_id]
+      @reviews = Product.find(params[:product_id]).reviews
+    else
+      @reviews = Review.all
+    end
+  
     render json: @reviews
   end
 
   # GET /reviews/1
   def show
+    @review = Review.find(params[:id])
+    
     render json: @review
   end
 
   # POST /reviews
   def create
-    @review = Review.new(review_params)
+    @review = current_user.reviews.build(review_params)
 
     if @review.save
       render json: @review, status: :created, location: @review
@@ -39,9 +46,9 @@ class ReviewsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Set review based on current user.
     def set_review
-      @review = Review.find(params[:id])
+      @review = current_user.reviews.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

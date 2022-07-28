@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+    has_many :reviews
+    
     # validations
     validates :title, presence: true,  uniqueness: { case_sensitive: false }, length: {maximum: 100, minimum: 10}
 

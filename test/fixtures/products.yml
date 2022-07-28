@@ -6,7 +6,7 @@ one:
   description: this is a test product description used as an example.
   sku: randomskustring
   images: image1,image2,image3
-  category: pencil
+  category: pencils
   tags: featured
 
 two:
@@ -15,5 +15,5 @@ two:
   description: this is a test product description used as an example.
   sku: randomskustring2
   images: image1,image2,image3
-  category: pencil
+  category: pencils
   tags: featured

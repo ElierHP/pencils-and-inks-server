@@ -19,4 +19,23 @@ class ActiveSupport::TestCase
 
     return @user
   end
+
+  def create_test_product
+    @product = Product.create!(  
+      title: 'Test Set! Drawing Pencil Set 2',  
+      price: 17.99, 
+      description: 'This is a test description that is perfect for testing the database and routes of this application.',
+      images: 'https://test.images.net', 
+      sku: 'T1232-001', 
+      category: 'pencils', 
+      tags: 'graphite-pencil')
+
+      return @product
+  end
+
+  def create_test_review(user, product)
+    @review = Review.create!(title: "Text Review Title", comment: "This is a test review comment.", rating: 5, recommended: true, user_id: user.id, product_id: product.id)
+
+    return @review
+  end
 end

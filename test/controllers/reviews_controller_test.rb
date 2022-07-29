@@ -2,7 +2,9 @@ require "test_helper"
 
 class ReviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @review = reviews(:one)
+    @user = log_in_test_user('member')
+    @product = create_test_product
+    @review = create_test_review(@user, @product)
   end
 
   test "should get index" do

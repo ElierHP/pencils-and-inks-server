@@ -43,4 +43,13 @@ module ProductsHelper
             @products = Product.where(category: category).all
         end
     end
+
+    # Filter by search results
+    def find_by_search(params)
+        @products = Product.where("lower(title) like ?", "%#{params.downcase}%")
+        if @products == []
+          @products = Product.where("lower(description) like ?", "%#{params.downcase}%")
+        end
+        @products
+    end
 end

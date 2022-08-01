@@ -13,6 +13,10 @@ class ProductsController < ApplicationController
       elsif params[:filter] == "latest"
         @products = Product.order('created_at DESC').limit(4)
 
+      # Get /products?search=query
+      elsif params[:search]
+        @products = find_by_search(params[:search])
+
       else
         @products = Product.all
       end

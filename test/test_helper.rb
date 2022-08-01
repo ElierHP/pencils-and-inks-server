@@ -28,7 +28,7 @@ class ActiveSupport::TestCase
       images: 'https://test.images.net', 
       sku: 'T1232-001', 
       category: 'pencils', 
-      tags: 'graphite-pencil')
+      tags: 'graphite-pencil', rating: 0)
 
       return @product
   end

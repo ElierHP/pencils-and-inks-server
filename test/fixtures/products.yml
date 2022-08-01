@@ -8,6 +8,7 @@ one:
   images: image1,image2,image3
   category: pencils
   tags: featured
+  rating: 5
 
 two:
   title: test product title2
@@ -17,3 +18,4 @@ two:
   images: image1,image2,image3
   category: pencils
   tags: featured
+  rating: 5

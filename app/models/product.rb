@@ -15,4 +15,6 @@ class Product < ApplicationRecord
     validates :category, presence: true, length: {maximum: 20, minimum: 3}
     
     validates :tags, length: {maximum: 50}
+
+    validates :rating, numericality: {greater_than: -1, less_than_or_equal_to: 5,  only_integer: true }
 end

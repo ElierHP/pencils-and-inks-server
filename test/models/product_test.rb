@@ -75,4 +75,11 @@ class ProductTest < ActiveSupport::TestCase
     @product.tags = "a" * 51
     assert_not @product.valid?
   end
+  
+  test "rating should not be greater than 5 or a negative number." do
+    @product.rating = -1
+    assert_not @product.valid?
+    @product.rating = 6
+    assert_not @product.valid?
+  end
 end

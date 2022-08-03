@@ -1,4 +1,5 @@
 class CartController < ApplicationController
+    include CartHelper
     # GET /cart
     def index
         @cart = []
@@ -13,26 +14,16 @@ class CartController < ApplicationController
     end
 
     # POST /cart
-    def create
-        # Find product to confirm it still exists.
-        @product = Product.find_by(id: params[:product_id])
-        
+    def create   
         # Create a new item to add to cart.
         @new_item = {product_id: params[:product_id], quantity: params[:quantity]}
 
-        # Check if a similar item already exists in cart.
-        similar_item = false
-        if session[:cart]
-            session[:cart].each do |item|
-                if item["product_id"] == @new_item[:product_id]
-                    similar_item = true
-                end
-            end
-        end
+        product_exists = find_product params[:product_id]
 
+        already_in_cart = is_product_in_cart? @new_item[:product_id]
 
         # Checks that product exists and is not already in the cart.
-        if @product && !similar_item
+        if product_exists && !already_in_cart
             # If session already exists, add to it.
             if session[:cart]
                 session[:cart] = session[:cart].push @new_item

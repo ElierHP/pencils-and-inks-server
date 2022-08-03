@@ -1,57 +1,72 @@
 class CartController < ApplicationController
     # GET /cart
     def index
-        @products = []
+        @cart = []
 
         # Check if there's a cart session
         if session[:cart]
-            # Check if there's multiple items
-            if session[:cart].include?(',')
-                @cart_ids = session[:cart].split(',');
-                @cart_ids = @cart_ids.map do |id|
-                    id.to_i
-                end
-                @products = Product.find(@cart_ids)
-            else
-                # Run this if there's only 1 item.
-                @product = Product.find(session[:cart])
-                # Turn single product into array.
-                @products = [@product]
-            end
+            @cart = session[:cart]
         end
 
         # Returns empty array if there is nothing in cart.
-        render json: @products
+        render json: @cart
     end
 
     # POST /cart
     def create
+        # Find product to confirm it still exists.
         @product = Product.find_by(id: params[:product_id])
-        @similar_item = session[:cart].include?(params[:product_id].to_s) unless session[:cart] == nil
+        
+        # Create a new item to add to cart.
+        @new_item = {product_id: params[:product_id], quantity: params[:quantity]}
+
+        # Check if a similar item already exists in cart.
+        similar_item = false
+        if session[:cart]
+            session[:cart].each do |item|
+                if item["product_id"] == @new_item[:product_id]
+                    similar_item = true
+                end
+            end
+        end
+
 
         # Checks that product exists and is not already in the cart.
-        if @product && !@similar_item
+        if @product && !similar_item
             # If session already exists, add to it.
             if session[:cart]
-                session[:cart] = session[:cart] + ',' + params[:product_id].to_s
+                session[:cart] = session[:cart].push @new_item
             else
             # Else create a new session
-                session[:cart] = params[:product_id].to_s
+                session[:cart] = [@new_item]
             end
         else
             render json: "Product not found or already in the cart.", status: :unprocessable_entity
         end
     end
 
+    # Update /cart/1
+    def update
+        if session[:cart]
+            session[:cart] = session[:cart].map do |item|
+                if item["product_id"].to_s == params[:id]
+                        { product_id: item["product_id"], quantity: params[:quantity] }
+                else
+                        item
+                end
+            end
+        else
+            render json: "There is nothing in the cart.", status: :unprocessable_entity
+        end
+    end
+
     # DELETE /cart/1
     def destroy
         # If there's more than 1 item in cart, run this.
-        if session[:cart].include?(',')
-            @cart_session = session[:cart].split(',');
-            @cart = @cart_session.filter do |id|
-                id != params[:id].to_s
+        if session[:cart].count >= 1
+            session[:cart] = session[:cart].filter do |item|
+                item["product_id"].to_s != params[:id]
             end
-            session[:cart] = @cart.join(',')
         # Else delete session
         else
             session[:cart] = nil

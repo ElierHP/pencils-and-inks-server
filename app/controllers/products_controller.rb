@@ -57,7 +57,14 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find(params[:id])
+      @ids = params[:id].split(',')
+
+      # If there is more than 1 id param, return an array.
+      if @ids.count > 1
+        @product = Product.where(id: params[:id].split(','))
+      else
+        @product = Product.find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.

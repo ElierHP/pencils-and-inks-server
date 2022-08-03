@@ -33,9 +33,9 @@ module SessionsHelper
         render json: 'unauthorized', status: :unauthorized unless logged_in_admin?
     end
 
-    # Delete user id session and set current user to nil
+    # Reset session and set current user to nil
     def log_out
-        session.delete(:user_id)
+        reset_session
         @current_user = nil
     end
 end

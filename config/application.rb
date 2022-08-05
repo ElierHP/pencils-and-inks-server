@@ -28,6 +28,11 @@ module PencilsAndInksServer
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
 
+    # Set same_site to none during production.
+    if Rails.env.production?  
+    Rails.application.config.action_dispatch.cookies_same_site_protection = :None
+    end
+
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
   end

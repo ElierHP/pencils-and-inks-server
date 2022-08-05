@@ -6,7 +6,7 @@ class CartController < ApplicationController
 
         # Check if there's a cart session
         if session[:cart]
-            @cart = session[:cart]
+            @cart = session[:cart].sort_by{|item| item["product_id"]}
         end
 
         # Returns empty array if there is nothing in cart.

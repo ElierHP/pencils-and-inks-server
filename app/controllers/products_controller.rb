@@ -7,7 +7,7 @@ class ProductsController < ApplicationController
   def index
       # GET /products?category=pencil
       if params[:category] || params[:tags]
-        @products = find_by_tags params[:category], params[:tags]  
+        @products = find_by_tags
 
       # GET /products?filter=latest
       elsif params[:filter] == "latest"
@@ -15,7 +15,7 @@ class ProductsController < ApplicationController
 
       # Get /products?search=query
       elsif params[:search]
-        @products = find_by_search(params[:search])
+        @products = find_by_search
 
       else
         @products = Product.all

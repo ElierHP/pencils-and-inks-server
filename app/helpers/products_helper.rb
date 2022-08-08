@@ -1,8 +1,14 @@
 module ProductsHelper
     # Filter products based on tags
     def product_filter(tags, category, accepted_tags)
-        @products = Product.where(category: category).all
+        @products = []
         @filtered_products = []
+
+        if category == "all"
+            @products = Product.all
+        else
+            @products = Product.where(category: category).all
+        end
 
         # Loop over products and push any product that matches the tags into @filtered_products
         @products.each do |product|  
@@ -28,7 +34,7 @@ module ProductsHelper
         @pencil_tags = ["featured", "graphite-pencil", "colored-pencil", "mechanical-pencil"]
         @paper_tags = ["featured", "sketch-paper", "sketchbook"]
         @ink_tags = ["featured", "artist-ink", "inking-pen"]
-
+      
         # Check for the correct category.
         if category == "pencils" && tags
            @products = product_filter params[:tags], "pencils", @pencil_tags
@@ -38,7 +44,9 @@ module ProductsHelper
               
         elsif category == "inks" && tags
             @products = product_filter tags, "inks", @ink_tags
-              
+
+        elsif category == nil
+            @products = product_filter tags, "all", [*@pencil_tags, *@ink_tags, *@paper_tags]
         else
             @products = Product.where(category: category).all
         end

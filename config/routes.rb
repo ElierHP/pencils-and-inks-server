@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   resources :cart, only: %i[ index create destroy update ]
+  delete "/cart", to: "cart#destroyCart"
 end

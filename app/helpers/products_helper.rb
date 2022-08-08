@@ -23,6 +23,11 @@ module ProductsHelper
             end     
         end
 
+        # If there's a price param, filter the products by price.
+        if params[:price]
+            @filtered_products = filter_by_price @filtered_products
+        end
+
         @filtered_products
     end
 
@@ -49,6 +54,12 @@ module ProductsHelper
             @products = product_filter [*@pencil_tags, *@ink_tags, *@paper_tags]
         else
             @products = Product.where(category: params[:category]).all
+            
+            if params[:price]
+                @products = filter_by_price @products
+            end
+
+            @products
         end
     end
 
@@ -59,5 +70,16 @@ module ProductsHelper
           @products = Product.where("lower(description) like ?", "%#{params.downcase}%")
         end
         @products
+    end
+
+    # Filter the products by price
+    def filter_by_price(products)
+        min_price = params[:price].split(',')[0].to_i
+        max_price = params[:price].split(',')[1].to_i
+
+        products = products.filter do |product|
+            price = product[:price]
+            price > min_price && price < max_price
+        end
     end
 end

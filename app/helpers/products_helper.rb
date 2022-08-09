@@ -4,6 +4,7 @@ module ProductsHelper
         @products = []
         @filtered_products = []
 
+        # Get products based on category
         if params[:category]
             @products = Product.where(category: params[:category]).all   
         else
@@ -23,44 +24,46 @@ module ProductsHelper
             end     
         end
 
-        # If there's a price param, filter the products by price.
-        if params[:price]
-            @filtered_products = filter_by_price @filtered_products
-        end
-
         @filtered_products
     end
 
      
 
-    # Filter by tags and return products.
-    def find_by_tags()
+    # Filter by given params and return products.
+    def find_by_params()
         # Variables for the accepted tags of each category.
         @pencil_tags = ["featured", "graphite-pencil", "colored-pencil", "mechanical-pencil"]
         @paper_tags = ["featured", "sketch-paper", "sketchbook"]
         @ink_tags = ["featured", "artist-ink", "inking-pen"]
       
-        # Check for the correct category.
+        # Check for the correct category and get products.
         if params[:category] == "pencils" && params[:tags]
            @products = product_filter @pencil_tags
 
         elsif params[:category] == "papers" && params[:tags]
             @products = product_filter @paper_tags
               
-        elsif params[:category] == "inks" && tags
+        elsif params[:category] == "inks" && params[:tags]
             @products = product_filter @ink_tags
 
         elsif params[:category] == nil
             @products = product_filter [*@pencil_tags, *@ink_tags, *@paper_tags]
         else
             @products = Product.where(category: params[:category]).all
-            
-            if params[:price]
-                @products = filter_by_price @products
-            end
-
-            @products
         end
+         
+        # Filter by price
+        if params[:price]
+            @products = filter_by_price @products
+        end
+
+        # Sort the products by asc,desc or price
+        if params[:sort]
+            @products = sort_products @products
+        end
+
+        # Return final products
+        @products
     end
 
     # Filter by search results
@@ -81,5 +84,29 @@ module ProductsHelper
             price = product[:price]
             price > min_price && price < max_price
         end
+    end
+
+    # Sort the products by asc,desc or price
+    def sort_products(products)
+        @sorted_products = []
+        if params[:sort] == 'asc'
+            @sorted_products = products.sort {
+                |a,b| b[:title] <=> a[:title]
+            }
+        elsif params[:sort] == 'desc'
+            @sorted_products = products.sort {
+                |a,b| a[:title] <=> b[:title]
+            }
+        elsif params[:sort] == 'price-asc'
+            @sorted_products = products.sort {
+                |a,b| b[:price] <=> a[:price]
+            }
+        elsif params[:sort] == 'price-desc'
+            @sorted_products = products.sort {
+                |a,b| a[:price] <=> b[:price]
+            }
+        end
+
+        @sorted_products
     end
 end

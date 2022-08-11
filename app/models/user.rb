@@ -1,6 +1,7 @@
 class User < ApplicationRecord
     has_secure_password
     has_many :reviews, dependent: :destroy
+    has_one :wishlist, dependent: :destroy
 
     before_save :downcase_email
 

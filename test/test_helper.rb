@@ -20,13 +20,13 @@ class ActiveSupport::TestCase
     return @user
   end
 
-  def create_test_product
+  def create_test_product(randomizer = "")
     @product = Product.create!(  
-      title: 'Test Set! Drawing Pencil Set 2',  
+      title: 'Test Set! Drawing Pencil Set 2' + randomizer,  
       price: 17.99, 
-      description: 'This is a test description that is perfect for testing the database and routes of this application.',
-      images: 'https://test.images.net', 
-      sku: 'T1232-001', 
+      description: 'This is a test description that is perfect for testing the database and routes of this application.' + randomizer,
+      images: 'https://test.images.net' + randomizer, 
+      sku: 'T1232-001' + randomizer, 
       category: 'pencils', 
       tags: 'graphite-pencil', rating: 0)
 
@@ -37,5 +37,11 @@ class ActiveSupport::TestCase
     @review = Review.create!(title: "Text Review Title", comment: "This is a test review comment.", rating: 5, recommended: true, user_id: user.id, product_id: product.id)
 
     return @review
+  end
+
+  def create_test_wishlist(user, product)
+    @wishlist = Wishlist.create!(user_id: user.id, product_ids: product.id)
+
+    return @wishlist
   end
 end

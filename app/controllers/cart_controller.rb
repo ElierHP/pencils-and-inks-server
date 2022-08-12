@@ -65,7 +65,7 @@ class CartController < ApplicationController
     end
 
     # DELETE /cart
-    def destroyCart
+    def destroy_cart
         session[:cart] = nil
     end
 end

@@ -1,5 +1,5 @@
 class WishlistsController < ApplicationController
-  before_action :authorize_user, only: %i[ index create update destroy ]
+  before_action :authorize_user, only: %i[ index create update destroy destroy_wishlist ]
   before_action :set_wishlist, only: %i[ index update destroy ]
   
   
@@ -10,14 +10,12 @@ class WishlistsController < ApplicationController
 
   # POST /wishlists
   def create
-    wishlist_exists = current_user.wishlist
-
     # Check if current user already has a wishlist.
-    if wishlist_exists.nil?
+    if @wishlist.nil?
       @wishlist = current_user.build_wishlist(wishlist_params)
 
       if @wishlist.save
-        render json: @wishlist, status: :created, location: @wishlist
+        render json: @wishlist, status: :created
       else
         render json: @wishlist.errors, status: :unprocessable_entity
       end
@@ -29,7 +27,6 @@ class WishlistsController < ApplicationController
 
   # PATCH/PUT /wishlists
   def update
-    @wishlist = current_user.wishlist
     @product_ids = @wishlist.product_ids
 
     # Check if product exists.
@@ -57,13 +54,14 @@ class WishlistsController < ApplicationController
 
   # DELETE /wishlists/id
   def destroy
-    @wishlist = current_user.wishlist.product_ids
-    @updated_wishlist = @wishlist.split(',').filter do |id|
+    @updated_wishlist = @wishlist.product_ids.split(',').filter do |id|
       id != params[:id]
     end
 
     if @updated_wishlist != []
-      current_user.wishlist.update(product_ids: @updated_wishlist.join(','))
+      @wishlist.update(product_ids: @updated_wishlist.join(','))
+
+      render json: @wishlist
     else
       current_user.wishlist.destroy
     end

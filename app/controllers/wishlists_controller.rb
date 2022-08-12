@@ -1,7 +1,7 @@
 class WishlistsController < ApplicationController
+  include WishlistsHelper
   before_action :authorize_user, only: %i[ index create update destroy destroy_wishlist ]
   before_action :set_wishlist, only: %i[ index update destroy ]
-  
   
   # GET /wishlists
   def index
@@ -27,26 +27,15 @@ class WishlistsController < ApplicationController
 
   # PATCH/PUT /wishlists
   def update
-    @product_ids = @wishlist.product_ids
+    product_exists = find_product
+    already_in_list = is_product_in_list?
 
-    # Check if product exists.
-    @product = Product.find_by(id: params[:wishlist][:product_ids])
-
-    # Check if product is already on the wishlist
-    already_in_cart = false;
-    @product_ids.split(',').each do |id|
-      if params[:wishlist][:product_ids].to_s == id
-        already_in_cart = true
-      end
-    end
-
-    if @product != nil && !already_in_cart
-
-      @updated_wishlist = @product_ids + "," + wishlist_params[:product_ids].to_s
-
+    if product_exists && !already_in_list
+      # Update wishlist with the new product_id
+      @updated_wishlist = add_product_id_to_wishlist
       @wishlist.update(product_ids: @updated_wishlist)
+
       render json: @wishlist
-      
     else
       render json: "Product does not exist or is already on the list."
     end
@@ -54,15 +43,14 @@ class WishlistsController < ApplicationController
 
   # DELETE /wishlists/id
   def destroy
-    @updated_wishlist = @wishlist.product_ids.split(',').filter do |id|
-      id != params[:id]
-    end
+    @updated_wishlist = filter_out_id @wishlist
 
     if @updated_wishlist != []
       @wishlist.update(product_ids: @updated_wishlist.join(','))
 
       render json: @wishlist
     else
+      # If the updated wishlist is an empty array, destroy it.
       current_user.wishlist.destroy
     end
   end

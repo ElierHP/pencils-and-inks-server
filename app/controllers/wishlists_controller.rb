@@ -5,7 +5,10 @@ class WishlistsController < ApplicationController
   
   # GET /wishlists
   def index
-    @wishlist_products = Product.find(@wishlist["product_ids"].split(','))
+    if !@wishlist.nil?
+      @wishlist_products = Product.find(@wishlist["product_ids"].split(','))
+    end
+   
     render json: @wishlist_products
   end
 

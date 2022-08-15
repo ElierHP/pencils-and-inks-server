@@ -18,7 +18,7 @@ module WishlistsHelper
 
     # Add the product_id sent via the body request to the wishlist.
     def add_product_id_to_wishlist
-        @updated_wishlist = @product_ids + "," + wishlist_params[:product_ids].to_s
+        @updated_wishlist = @wishlist.product_ids + "," + wishlist_params[:product_ids].to_s
     end
 
     # Filters out the product_id from the wishlist using the id params.

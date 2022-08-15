@@ -1,11 +1,12 @@
 class WishlistsController < ApplicationController
   include WishlistsHelper
   before_action :authorize_user, only: %i[ index create update destroy destroy_wishlist ]
-  before_action :set_wishlist, only: %i[ index update destroy ]
+  before_action :set_wishlist, only: %i[ index create update destroy ]
   
   # GET /wishlists
   def index
-    render json: @wishlist
+    @wishlist_products = Product.find(@wishlist["product_ids"].split(','))
+    render json: @wishlist_products
   end
 
   # POST /wishlists

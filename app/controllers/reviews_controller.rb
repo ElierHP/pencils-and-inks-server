@@ -4,20 +4,31 @@ class ReviewsController < ApplicationController
 
   # GET /reviews
   def index
+    # If there is a product_id param, get all reviews that belong to that product.
     if params[:product_id]
-      @reviews = Product.find(params[:product_id]).reviews
+      @reviews = Product.find(params[:product_id]).reviews.order('created_at DESC')
     else
+      # Else, get all the reviews.
       @reviews = Review.all
     end
   
-    render json: @reviews
+    if @reviews
+      render json: @reviews
+    else
+      render json: @reviews.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /reviews/1
   def show
     @review = Review.find(params[:id])
-    
-    render json: @review
+
+    if @review
+      render json: @review
+    else
+      render json:  @review.errors, status: :unprocessable_entity
+    end
+   
   end
 
   # POST /reviews

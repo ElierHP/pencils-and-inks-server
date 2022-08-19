@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  include ReviewsHelper
   before_action :authorize_user, only: %i[ create update destroy ]
   before_action :set_review, only: %i[ update destroy ]
 
@@ -36,6 +37,7 @@ class ReviewsController < ApplicationController
     @review = current_user.reviews.build(review_params)
 
     if @review.save
+      update_rating
       render json: @review, status: :created, location: @review
     else
       render json: @review.errors, status: :unprocessable_entity
@@ -45,6 +47,7 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1
   def update
     if @review.update(review_params)
+      update_rating
       render json: @review
     else
       render json: @review.errors, status: :unprocessable_entity
@@ -54,6 +57,11 @@ class ReviewsController < ApplicationController
   # DELETE /reviews/1
   def destroy
     @review.destroy
+    if @review.destroy
+      update_rating
+    else
+      render json: @review.errors, status: :unprocessable_entity
+    end
   end
 
   private

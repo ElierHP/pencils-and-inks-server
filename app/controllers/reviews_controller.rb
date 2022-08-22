@@ -34,13 +34,20 @@ class ReviewsController < ApplicationController
 
   # POST /reviews
   def create
-    @review = current_user.reviews.build(review_params)
+    # User can only review once per prouduct. Check if it has already been reviewed.
+    already_reviewed = Review.find_by(product_id: params[:review][:product_id], user_id: params[:review][:user_id])
 
-    if @review.save
-      update_rating
-      render json: @review, status: :created, location: @review
+    if already_reviewed.nil?
+      @review = current_user.reviews.build(review_params)
+
+      if @review.save
+        update_rating
+        render json: @review, status: :created, location: @review
+      else
+        render json: @review.errors, status: :unprocessable_entity
+      end
     else
-      render json: @review.errors, status: :unprocessable_entity
+        render json: {error: "You have already reviewed this product."}, status: :conflict
     end
   end
 

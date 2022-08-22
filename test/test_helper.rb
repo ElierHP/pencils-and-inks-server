@@ -10,9 +10,9 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  def log_in_test_user(role)
+  def log_in_test_user(role, randomizer = "")
     # Create a User, needed to obtain proper Bcrypt hash.
-    @user = User.create(email: "example@user.com", password: "secret", password_confirmation: "secret", role: role)
+    @user = User.create(email: "example@user.com" + randomizer, password: "secret", password_confirmation: "secret", role: role, first_name: "User", last_name: 'Testing')
 
     # Login the User. Required for protected routes.
     post login_url, params: { session: { email: @user.email, password: 'secret' } }, as: :json

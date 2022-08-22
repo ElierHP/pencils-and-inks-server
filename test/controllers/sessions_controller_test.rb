@@ -2,7 +2,7 @@ require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-  @user = User.create(email: 'example@user.com', password: 'secret', password_confirmation: 'secret', role: 'member')
+  @user = User.create(email: 'example@user.com', password: 'secret', password_confirmation: 'secret', role: 'member', first_name: "Example", last_name: "User")
   end
 
   test "should send post req to /login & authenticate user" do

@@ -17,7 +17,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should post to create" do
     assert_difference("User.count") do
-      post users_url, params: {user: {email: 'example_user@example.com', password: 'secret', password_confirmation: 'secret', role: 'member'} }, as: :json
+      post users_url, params: {user: {email: 'example_user@example.com', password: 'secret', password_confirmation: 'secret', role: 'member', first_name: "User", last_name: "Test"} }, as: :json
     end
 
     assert_response :created

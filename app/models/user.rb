@@ -14,6 +14,10 @@ class User < ApplicationRecord
 
     validates_inclusion_of :role, :in => ['admin', 'member']
 
+    validates :first_name, presence: true, length: { minimum: 1, maximum: 20  }
+
+    validates :last_name, presence: true, length: { minimum: 1, maximum: 40  }
+
     # Converts to all lowercase.
     def downcase_email
         self.email = email.downcase

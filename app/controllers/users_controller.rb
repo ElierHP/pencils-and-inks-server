@@ -18,7 +18,11 @@ class UsersController < ApplicationController
 
     if @user.save
       log_in @user
-      render json: {email: @user[:email], role: @user[:role], id: current_user[:id]}, status: :created, location: @user
+      render json: {
+        email: current_user[:email], role: current_user[:role], id: current_user[:id], first_name: current_user[:first_name], last_name:current_user[:last_name]
+        }, 
+        status: :created, 
+        location: @user
     else
       render json: @user.errors, status: :conflict
     end
@@ -27,7 +31,9 @@ class UsersController < ApplicationController
   # PUT/PATCH /users/1
   def update
     if @user.update(user_params)
-      render json: {email: @user[:email], role: @user[:role], id: current_user[:id]}
+      render json: {
+        email: current_user[:email], role: current_user[:role], id: current_user[:id], first_name: current_user[:first_name], last_name:current_user[:last_name]
+        }
     else
       render json: @user.errors, status: :unprocessable_entity
     end

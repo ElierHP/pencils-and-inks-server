@@ -14,7 +14,14 @@ class ReviewsController < ApplicationController
     end
   
     if @reviews
-      render json: @reviews
+      # Add each users first name and last name to the array.
+      reviews_with_name = []
+      @reviews.as_json.each do |review|
+        @user = User.find(review["user_id"])
+        reviews_with_name.push({**review, first_name:  @user.first_name, last_name: @user.last_name})
+      end
+      # Return all of the products reviews, with each users' name.
+      render json: reviews_with_name
     else
       render json: @reviews.errors, status: :unprocessable_entity
     end

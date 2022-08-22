@@ -10,8 +10,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get show" do
-    get user_url(@user)
+  test "should get show as admin" do
+    @admin_user = log_in_test_user 'admin', 'admin-user'
+    @admin_user.save
+    get user_url(@admin_user)
     assert_response :success
   end
 

@@ -1,15 +1,16 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
   before_action :authorize_user, only: %i[index]
+  before_action :authorize_admin, only: %i[show]
 
   # GET /users
   def index
-      render json: {email: current_user[:email], role: current_user[:role], id: current_user[:id]}
+      render json: current_user_as_json
   end
 
   # GET /users/1
   def show
-    render json: {email: @user[:email], role: @user[:role], id: @user[:id]}
+    render json: @user
   end
 
   # POST /users
@@ -18,9 +19,7 @@ class UsersController < ApplicationController
 
     if @user.save
       log_in @user
-      render json: {
-        email: current_user[:email], role: current_user[:role], id: current_user[:id], first_name: current_user[:first_name], last_name:current_user[:last_name]
-        }, 
+      render json: current_user_as_json, 
         status: :created, 
         location: @user
     else
@@ -31,9 +30,7 @@ class UsersController < ApplicationController
   # PUT/PATCH /users/1
   def update
     if @user.update(user_params)
-      render json: {
-        email: current_user[:email], role: current_user[:role], id: current_user[:id], first_name: current_user[:first_name], last_name:current_user[:last_name]
-        }
+      render json: current_user_as_json
     else
       render json: @user.errors, status: :unprocessable_entity
     end

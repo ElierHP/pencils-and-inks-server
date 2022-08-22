@@ -38,4 +38,15 @@ module SessionsHelper
         reset_session
         @current_user = nil
     end
+
+    # User json response
+    def current_user_as_json
+       {
+        email: current_user[:email], 
+        role: current_user[:role], 
+        id: current_user[:id], 
+        first_name: current_user[:first_name], 
+        last_name:current_user[:last_name]
+        }
+    end
 end

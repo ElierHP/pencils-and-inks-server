@@ -54,7 +54,7 @@ class ProductTest < ActiveSupport::TestCase
   test "images should be valid" do
     @product.images = ""
     assert_not @product.valid?
-    @product.images = "a" * 5001
+    @product.images = "a" * 1001
     assert_not @product.valid?
     @product.images = "a" * 5
     assert_not @product.valid?

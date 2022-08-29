@@ -67,10 +67,10 @@ module ProductsHelper
     end
 
     # Filter by search results
-    def find_by_search(params)
+    def find_by_search
         @products = Product.where("lower(title) like ?", "%#{params[:search].downcase}%")
         if @products == []
-          @products = Product.where("lower(description) like ?", "%#{params.downcase}%")
+          @products = Product.where("lower(description) like ?", "%#{params[:search].downcase}%")
         end
         @products
     end

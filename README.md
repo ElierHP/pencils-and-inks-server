@@ -1,24 +1,56 @@
-# README
+# Pencils and Inks
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### Top Technologies
 
-Things you may want to cover:
+[![Ruby Badge](https://img.shields.io/badge/-Ruby-D84A4A?style=for-the-badge&labelColor=black&logo=ruby&logoColor=D84A4A)](#)
+[![Ruby on Rails Badge](https://img.shields.io/badge/-rubyonrails-AA2121?style=for-the-badge&labelColor=black&logo=rubyonrails&logoColor=AA2121)](#)
+[![HTML Badge](https://img.shields.io/badge/-html5-DC6E31?style=for-the-badge&labelColor=black&logo=html5&logoColor=DC6E31)](#) 
+[![CSS Badge](https://img.shields.io/badge/-css3-4373EF?style=for-the-badge&labelColor=black&logo=css3&logoColor=4373EF)](#) 
+[![React Badge](https://img.shields.io/badge/-React-61DBFB?style=for-the-badge&labelColor=black&logo=react&logoColor=61DBFB)](#)
+[![Nextjs Badge](https://img.shields.io/badge/-Nextjs-ABB9CA?style=for-the-badge&labelColor=black&logo=next.js&logoColor=ABB9CA)](#)
 
-* Ruby version
+Pencils and Inks is an e-commerce website that I developed from scratch using React & Next js for the client side and Ruby on Rails for the server API. The website includes various features such as; products, users, filter settings, a review system with ratings, a shopping cart, and an admin panel for CRUD operations.
 
-* System dependencies
+The project is currently live on the web at : [https://pencils-and-inks.netlify.app](https://pencils-and-inks.netlify.app/)
 
-* Configuration
+## Front End
 
-* Database creation
+The client side was built using React and the Next js framework. Styling was done with a CSS-in-JS approach using Emotion js.
 
-* Database initialization
+The frontend codebase can be viewed on the github repo below. :arrow_down:
 
-* How to run the test suite
+:white_square_button: [Pencils and Inks](https://github.com/ElierHP/pencils-and-inks)
 
-* Services (job queues, cache servers, search engines, etc.)
+## Installation - Frontend
 
-* Deployment instructions
+1. Download repository
+   ```bash
+   git clone https://github.com/ElierHP/pencils-and-inks.git
+   ```
+2. Install packages
+   ```bash
+   npm install
+   ```
+3. Run development server
+    ```bash
+    npm run dev
+    ```
+## Installation - Backend
 
-* ...
+1. Download repository
+   ```bash
+   git clone https://github.com/ElierHP/pencils-and-inks-server
+   ```
+2. Install packages
+   ```bash
+   bundle install
+   rails db:migrate
+   ```
+3. Run development server
+   ```bash
+   rails s
+   ```
+
+#### :mailbox: Reach out to me!
+
+- :email: elierporto@gmail.com
